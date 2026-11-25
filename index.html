@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- The privacy promise, enforced by the browser: scripts, data and the model may only come from this
-     site, and nothing may be sent anywhere (connect-src 'self'). img-src gains the GoatCounter host
-     only when counting is switched on in app.js. selftest.sh checks this line. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; connect-src 'self'; img-src 'self' blob: data:; style-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+     site, and nothing may be sent anywhere (connect-src 'self'). img-src also allows the GoatCounter
+     pixel (a plain image request that says only "the page was opened"). selftest.sh checks this line. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; connect-src 'self'; img-src 'self' blob: data: https://marcelloavila.goatcounter.com; style-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'none'">
 <title>Tapacaras: tapá las caras en tu foto sin subirla a internet</title>
 <meta name="description" content="Tapá las caras en tu foto con difuminado, pixelado o una carita, sin subirla a internet.">
 <style>

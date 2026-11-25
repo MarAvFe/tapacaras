@@ -42,9 +42,15 @@ Format: reading taken — reason — how to change.
   translated from the page. — Keep the two files in step when the drawing changes.
 
 - **Published 2026-11-25: public repo github.com/MarAvFe/tapacaras, GitHub Pages from `main` /, served at
-  marcelloavila.com/tapacaras. Visit counting is off because no GoatCounter code has been given yet.** — The
-  user said "push this thing". Every push to `main` redeploys. — Make the repo private or disable Pages
+  marcelloavila.com/tapacaras. ** — The user said "push this thing". Every push to `main` redeploys. — Make the repo private or disable Pages
   in its settings to take it down.
+
+- **Visit counting uses the user's GoatCounter code `marcelloavila` through the no-JavaScript pixel, counted
+  under the path `/tapacaras/`.** — The user pasted GoatCounter's `count.js` snippet. Loading a script from
+  `gc.zgo.at` would break the "no code from other sites" rule behind the privacy promise; the pixel only
+  allows an image from `marcelloavila.goatcounter.com`. The code covers all of marcelloavila.com, so "/"
+  would mix with the homepage. Pixel counts carry no referrer or screen size (GoatCounter's pixel docs). —
+  `GOATCOUNTER_CODE` / `COUNT_PATH` in `app.js` and the `img-src` host in the CSP; set the code to "" to stop.
 
 ## Detection
 

@@ -31,8 +31,9 @@ Check every photo before sharing it: the detector misses faces in profile, upsid
 - The page's Content-Security-Policy forbids sending data anywhere (`connect-src 'self'`) and loading code
   from other sites; `./selftest.sh` fails if that line changes.
 - Once loaded, it works with the network off (tested with the network cut before choosing a photo).
-- Visit counting (only "the page was opened", via a GoatCounter pixel, no cookies) is switched off until a
-  GoatCounter code is set in `app.js`.
+- Visit counting: on marcelloavila.com only, the page loads one GoatCounter pixel that records that
+  `/tapacaras/` was opened, with no cookies and nothing about the photo. `tests/screenshot.mjs` lists every
+  request that leaves the site.
 
 ## Self-test
 

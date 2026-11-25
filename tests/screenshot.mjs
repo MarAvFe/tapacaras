@@ -15,11 +15,12 @@ const port = new URL(wsUrl).port;
 const page = (await (await fetch(`http://127.0.0.1:${port}/json/list`)).json()).find((t) => t.type === "page");
 const ws = new WebSocket(page.webSocketDebuggerUrl);
 await new Promise((r) => ws.addEventListener("open", r));
-let id = 0; const pending = new Map(); const logs = [];
+let id = 0; const pending = new Map(); const logs = []; const offsite = [];
 ws.addEventListener("message", (e) => {
   const m = JSON.parse(e.data);
   if (m.method === "Runtime.consoleAPICalled" && m.params.type === "error") logs.push(m.params.args.map((a) => a.value ?? a.description).join(" "));
   if (m.method === "Runtime.exceptionThrown") logs.push(m.params.exceptionDetails.exception?.description);
+  if (m.method === "Network.requestWillBeSent" && !m.params.request.url.startsWith(new URL(base).origin) && !/^(data|blob):/.test(m.params.request.url)) offsite.push(m.params.request.url);
   if (m.method === "Log.entryAdded" && ["error", "warning"].includes(m.params.entry.level)) logs.push(m.params.entry.text);
   pending.get(m.id)?.(m); pending.delete(m.id);
 });
@@ -31,7 +32,7 @@ const shot = async (name) => {
   writeFileSync(`${out}-${name}.jpg`, Buffer.from(r.result.data, "base64"));
 };
 
-await send("Runtime.enable"); await send("Log.enable"); await send("Page.enable"); await send("DOM.enable");
+await send("Runtime.enable"); await send("Log.enable"); await send("Network.enable"); await send("Page.enable"); await send("DOM.enable");
 await send("Emulation.setDeviceMetricsOverride", { width: +width, height: +height, deviceScaleFactor: 1, mobile: +width < 600 });
 if (process.env.ACCEPT_LANG) { // pretend the phone's languages are these, e.g. "en-US,en" or "es-CR,es"
   const ua = (await send("Browser.getVersion")).result.userAgent;
@@ -85,6 +86,7 @@ const tap = await evalJs(`(() => {
 })()`);
 console.log("canvas at", JSON.stringify(tap));
 writeFileSync(`${out}-meta.json`, JSON.stringify({ tap }));
+console.log("requests to other sites:", offsite.length ? offsite.join(" ") : "none");
 console.log(logs.length ? "CONSOLE:\n" + logs.join("\n") : "console: no errors or warnings");
 proc.once("exit", () => { rmSync(profile, { recursive: true, force: true }); process.exit(0); });
 proc.kill();

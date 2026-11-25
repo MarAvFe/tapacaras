@@ -17,4 +17,4 @@ All notable changes to this project are documented here. The format follows
 - Three cover styles: Difuminado, Pixelado, Carita 🙂.
 - Download as JPEG without the original's location or camera metadata.
 - Content-Security-Policy that forbids sending data anywhere; checked by the self-test.
-- Optional visit counting (page opens only) via a GoatCounter pixel, off until a code is set.
+- Visit counting (page opens only, as `/tapacaras/`) via a GoatCounter pixel on marcelloavila.com.

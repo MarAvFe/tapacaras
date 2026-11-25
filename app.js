@@ -17,7 +17,9 @@ const MAX_PIXELS = 16_000_000;
 const COVER_PAD = 0.3;
 // GoatCounter site code; empty means no visit counting at all. Counting runs only on the real host,
 // and the CSP in index.html must list the same host or the browser blocks the pixel.
-const GOATCOUNTER_CODE = "";
+const GOATCOUNTER_CODE = "marcelloavila";
+// The code covers all of marcelloavila.com, so this page counts under its own path, not "/".
+const COUNT_PATH = "/tapacaras/";
 const COUNT_HOST = "marcelloavila.com";
 
 // ---- Pure logic: no DOM, no storage. Covered by the self-test. ----
@@ -354,7 +356,7 @@ function createApp(el) {
 function countVisit() {
   // Counts only that the page was opened: no photo data, no cookies (GoatCounter pixel, no JavaScript sent).
   if (!GOATCOUNTER_CODE || location.hostname !== COUNT_HOST) return;
-  new Image().src = `https://${GOATCOUNTER_CODE}.goatcounter.com/count?p=/`;
+  new Image().src = `https://${GOATCOUNTER_CODE}.goatcounter.com/count?p=${encodeURIComponent(COUNT_PATH)}`;
 }
 
 // ---- Self-test: open with #selftest. Uses generated data, never a visitor's photo. ----
