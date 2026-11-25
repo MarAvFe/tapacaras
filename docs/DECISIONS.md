@@ -1,0 +1,48 @@
+# Decisions
+
+Format: reading taken — reason — how to change.
+
+## Setup (2026-11-25)
+
+- **Template:** `single-file-web-tool` from the `new-project` skill, with the script moved to `app.js` and
+  the runtime and model added next to it. — Closest fit: a static page with a headless self-test. The CSP
+  forbids inline scripts, and the model can't be inlined sensibly. — Inline the script and allow it by CSP
+  hash if a single file matters again.
+- **Name and URL: Tapacaras, served at `marcelloavila.com/tapacaras` from its own repository
+  `MarAvFe/tapacaras`.** — `maravfe.github.io` is the user site behind marcelloavila.com. A project repo
+  publishes under the same domain, like Ubicatex, and keeps the site repo clean. — Copy the folder into
+  `maravfe.github.io/tapacaras/` instead; the URL stays the same.
+- **Third cover style: Pixelado.** — The request asked for 3 options but named two (plain blur, smiley
+  emoji); pixelation is the usual third. — Change the radio buttons in `index.html` and the `style`
+  branches in `drawCover`.
+- **Spanish uses "usted".** — Matches Ubicatex's voice ("Toque su lugar en el mapa"). — Edit the strings in
+  `index.html` and `statusText` in `app.js`.
+
+## Detection
+
+- **YuNet (OpenCV Zoo, MIT) on ONNX Runtime Web (MIT), both self-hosted.** — Licence read at the source:
+  `opencv_zoo/models/face_detection_yunet/LICENSE` is MIT. InsightFace models are non-commercial only, and
+  many YOLO-face models are AGPL. MediaPipe was not tested. — Swap `models/` and `decodeYunet`.
+- **Threshold 0.5, scans at 640 and 1920, NMS IoU 0.3, 30% padding.** — Measured on 49 GoPro frames against
+  InsightFace's clear faces (score ≥ 0.6): 0.5 matched 39/48 with 11 stray boxes; 0.3 matched 47/48 with
+  82 strays (wall climbing holds, knees). Profiles and upside-down faces are missed at both, so a drag tool
+  is required. — `SCORE_THRESHOLD`, `SCAN_SIDES` and `COVER_PAD` at the top of `app.js`.
+- **Photos above 16 M pixels are scaled down.** — iOS Safari refuses larger canvases. — `MAX_PIXELS`.
+- **Single-threaded WebAssembly.** — Threads need COOP/COEP headers, which GitHub Pages can't send. On a
+  desktop a 4000×3000 photo takes about 0.6 s; phones are untested. — Host elsewhere with those headers and
+  raise `numThreads`.
+
+## Privacy
+
+- **The CSP is the privacy guarantee, and the self-test checks it.** — A promise the browser enforces beats
+  one the code makes. — Edit the `<meta http-equiv="Content-Security-Policy">` line; `selftest.sh` will
+  complain if it stops forbidding sends.
+- **Counting visits is analytics, so it's limited to page opens via a GoatCounter pixel, off until the user
+  sets a code.** — The user asked for root visits only, no private data, and dropped photo size. GoatCounter
+  (read 2026-11-25 at goatcounter.com/help/privacy and /help/gdpr) sets no cookies, doesn't store IP
+  addresses, and says a consent notice is "probably" not needed. — Set `GOATCOUNTER_CODE` in `app.js` and
+  add its host to `img-src`; empty it to stop counting.
+- **Blur and pixelate are done by downscaling to a few blocks, not with `ctx.filter`.** — Canvas filters
+  aren't available in every Safari. Five blocks across a face leave nothing recognisable. — `drawCover`.
+- **The downloaded JPEG is a fresh canvas export.** — It carries no EXIF (GPS, camera, date). Tested with an
+  original GoPro photo that had EXIF. — Nothing to change; keep `toBlob`.

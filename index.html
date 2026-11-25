@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es-CR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The privacy promise, enforced by the browser: scripts, data and the model may only come from this
+     site, and nothing may be sent anywhere (connect-src 'self'). img-src gains the GoatCounter host
+     only when counting is switched on in app.js. selftest.sh checks this line. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; connect-src 'self'; img-src 'self' blob: data:; style-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>Tapacaras: tape las caras de sus fotos sin subirlas a internet</title>
+<meta name="description" content="Tape las caras de una foto con difuminado, pixelado o una carita, sin que la foto salga de su teléfono o computadora.">
+<style>
+  :root {
+    --ink: #111; --paper: #fffdf5; --accent: #ffd23f; --ok: #3ddc97; --bad: #ff5c5c;
+    --line: 3px solid var(--ink); --shadow: 4px 4px 0 var(--ink);
+    font-family: system-ui, sans-serif; color: var(--ink); background: var(--paper);
+  }
+  body { margin: 0; min-height: 100dvh; display: flex; flex-direction: column; }
+  header, main, footer { padding: 1rem; max-width: 60rem; width: 100%; margin: 0 auto; box-sizing: border-box; }
+  header { border-bottom: var(--line); }
+  h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
+  header p { margin: 0; }
+  .btn, button {
+    display: inline-block; font: inherit; font-weight: 700; padding: .6rem 1rem; cursor: pointer;
+    background: var(--accent); border: var(--line); box-shadow: var(--shadow); color: var(--ink);
+    transition: transform .08s, box-shadow .08s;
+  }
+  .btn:active, button:active { transform: translate(4px, 4px); box-shadow: none; }
+  button:disabled { opacity: .5; cursor: default; }
+  .btn:focus-within { outline: 3px solid #2b6cff; outline-offset: 3px; }
+  #file { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .row { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; margin: 1rem 0; }
+  fieldset { border: var(--line); padding: .5rem .75rem; display: flex; flex-wrap: wrap; gap: .75rem; margin: 0; }
+  legend { font-weight: 700; padding: 0 .25rem; }
+  label.opt { display: flex; align-items: center; gap: .3rem; cursor: pointer; }
+  #status { min-height: 1.5em; font-weight: 600; }
+  #canvas { display: block; max-width: 100%; max-height: 75dvh; border: var(--line); touch-action: none; cursor: crosshair; }
+  .privacy { border: var(--line); background: #e8f8ff; padding: .75rem 1rem; }
+  .privacy p { margin: .25rem 0; }
+  footer { font-size: .9rem; border-top: var(--line); margin-top: auto; }
+  .notice { margin: 1rem; padding: 1rem; border: var(--line); background: var(--bad); }
+  #selftest { margin: 1rem; padding: 1rem; border: var(--line); font-family: ui-monospace, monospace; white-space: pre-wrap; }
+  #selftest.pass { background: var(--ok); }
+  #selftest.fail { background: var(--bad); }
+  [hidden] { display: none !important; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Tapacaras</h1>
+  <p>Tape las caras de una foto antes de compartirla. Su foto no sale de este dispositivo.</p>
+</header>
+<div id="unsupported" class="notice" hidden>
+  Este navegador no puede usar Tapacaras. Pruebe con una versión reciente de Chrome, Edge, Firefox o Safari.
+</div>
+<main>
+  <section class="privacy" aria-label="Privacidad">
+    <p><strong>Su foto nunca se sube a internet.</strong> Todo pasa aquí mismo, en su navegador. Si quiere
+      comprobarlo, apague el wifi y los datos después de que cargue la página: sigue funcionando.</p>
+    <p>La foto que descarga no lleva la ubicación ni los datos de la cámara de la original.</p>
+  </section>
+
+  <div class="row">
+    <label class="btn" for="file">Elegir foto<input id="file" type="file" accept="image/*"></label>
+  </div>
+
+  <section id="editor" hidden>
+    <div class="row">
+      <fieldset>
+        <legend>Tapar con</legend>
+        <label class="opt"><input type="radio" name="style" value="blur" checked> Difuminado</label>
+        <label class="opt"><input type="radio" name="style" value="pixel"> Pixelado</label>
+        <label class="opt"><input type="radio" name="style" value="emoji"> Carita 🙂</label>
+      </fieldset>
+      <button id="download" type="button" disabled>Descargar foto</button>
+    </div>
+    <p id="status" role="status" aria-live="polite"></p>
+    <canvas id="canvas" aria-label="Su foto con las caras tapadas"></canvas>
+    <p>Revise bien antes de compartir: la detección automática puede fallar con caras de perfil, muy
+      pequeñas o boca abajo. Arrastre el dedo o el ratón sobre cualquier cara que siga a la vista.</p>
+  </section>
+</main>
+<footer>
+  <p>Hecho por <a href="https://marcelloavila.com/">Marcello Ávila</a>. Código abierto
+    (<a href="https://github.com/MarAvFe/tapacaras">GitHub</a>). Detección de caras con
+    <a href="https://github.com/opencv/opencv_zoo/tree/main/models/face_detection_yunet">YuNet</a> y
+    <a href="https://onnxruntime.ai/">ONNX Runtime</a>.</p>
+</footer>
+<pre id="selftest" hidden></pre>
+<script src="vendor/ort.wasm.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

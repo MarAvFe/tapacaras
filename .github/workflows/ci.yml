@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  selftest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # tests/run-selftest.mjs uses Node's built-in WebSocket (Node 22+)
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # ubuntu-latest ships Google Chrome; selftest.sh finds it on PATH
+      - name: Self-test
+        run: ./selftest.sh
