@@ -52,47 +52,48 @@
 <body>
 <header>
   <h1>Tapacaras</h1>
-  <p>¡Tapá las caras en tu foto! (Sin subirla a internet)</p>
+  <p data-t="tagline">¡Tapá las caras en tu foto! (Sin subirla a internet)</p>
 </header>
-<div id="unsupported" class="notice" hidden>
+<div id="unsupported" class="notice" data-t="unsupported" hidden>
   Este navegador no puede usar Tapacaras. Probá con una versión reciente de Chrome, Edge, Firefox o Safari.
 </div>
 <main>
   <details class="privacy">
-    <summary>¿Esto es seguro?</summary>
-    <p>Esto no se sube a internet, todo funciona desde tu teléfono. Si lo querés confirmar, podés apagar el
+    <summary data-t="safeTitle">¿Esto es seguro?</summary>
+    <p data-t="safeBody">Esto no se sube a internet, todo funciona desde tu teléfono. Si lo querés confirmar, podés apagar el
       internet y verás cómo el sitio igual funciona con normalidad 😉. Además, la foto que estás bajando no
       trae fecha ni datos de GPS.</p>
   </details>
 
   <div class="row">
-    <label class="btn" for="file">Elegir foto<input id="file" type="file" accept="image/*"></label>
+    <label class="btn" for="file"><span data-t="choose">Elegir foto</span><input id="file" type="file" accept="image/*"></label>
   </div>
 
   <figure id="sample">
-    <label for="file"><img src="assets/ejemplo.svg" width="900" height="440"
-      alt="Ejemplo: tres personas dibujadas con la cara tapada con difuminado, pixelado y una carita"></label>
+    <label for="file"><img id="sampleImg" src="assets/ejemplo.svg" width="900" height="440"
+      data-t-alt="sampleAlt" alt="Ejemplo: tres personas dibujadas con la cara tapada con difuminado, pixelado y una carita"></label>
   </figure>
 
   <section id="editor" hidden>
     <div class="row">
       <fieldset>
-        <legend>Tapar con</legend>
-        <label class="opt"><input type="radio" name="style" value="blur" checked> Difuminado</label>
-        <label class="opt"><input type="radio" name="style" value="pixel"> Pixelado</label>
-        <label class="opt"><input type="radio" name="style" value="emoji"> Carita 🙂</label>
+        <legend data-t="coverWith">Tapar con</legend>
+        <label class="opt"><input type="radio" name="style" value="blur" checked> <span data-t="blur">Difuminado</span></label>
+        <label class="opt"><input type="radio" name="style" value="pixel"> <span data-t="pixel">Pixelado</span></label>
+        <label class="opt"><input type="radio" name="style" value="emoji"> <span data-t="emoji">Carita 🙂</span></label>
       </fieldset>
-      <button id="download" type="button" disabled>Descargar foto</button>
+      <button id="download" type="button" disabled data-t="download">Descargar foto</button>
     </div>
     <p id="status" role="status" aria-live="polite"></p>
-    <canvas id="canvas" aria-label="Tu foto con las caras tapadas"></canvas>
+    <canvas id="canvas" data-t-aria="canvasLabel" aria-label="Tu foto con las caras tapadas"></canvas>
   </section>
 </main>
 <footer>
-  <p>Hecho por <a href="https://marcelloavila.com/">Marcello Ávila</a>. Código abierto
-    (<a href="https://github.com/MarAvFe/tapacaras">GitHub</a>). Detección de caras con
-    <a href="https://github.com/opencv/opencv_zoo/tree/main/models/face_detection_yunet">YuNet</a> y
-    <a href="https://onnxruntime.ai/">ONNX Runtime</a>.</p>
+  <p><span data-t="madeBy">Hecho por</span> <a href="https://marcelloavila.com/">Marcello Ávila</a>.
+    <span data-t="openSource">Código abierto</span> (<a href="https://github.com/MarAvFe/tapacaras">GitHub</a>).
+    <span data-t="detection">Detección de caras con</span>
+    <a href="https://github.com/opencv/opencv_zoo/tree/main/models/face_detection_yunet">YuNet</a>
+    <span data-t="and">y</span> <a href="https://onnxruntime.ai/">ONNX Runtime</a>.</p>
 </footer>
 <pre id="selftest" hidden></pre>
 <script src="vendor/ort.wasm.min.js"></script>

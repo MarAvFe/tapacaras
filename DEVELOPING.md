@@ -6,6 +6,14 @@
 - `vendor/`: ONNX Runtime Web 1.31.1, WebAssembly-only build, unmodified (about 15 MB, mostly the `.wasm`).
 - `models/`: YuNet `2026may` (dynamic input size), unmodified.
 
+## Texts
+
+Every visible text lives in `TEXT` in `app.js`, with `es` and `en` keys. Elements carry `data-t` (text),
+`data-t-alt` or `data-t-aria`. The Spanish words are also written in `index.html`, so the page reads
+right before scripts run. The self-test fails if the two copies differ or a key is missing in one
+language. `pickLang` chooses the language from `navigator.languages[0]`; drive it with
+`ACCEPT_LANG=en-US,en node tests/screenshot.mjs ...`.
+
 ## How detection works
 
 Each photo is scanned twice, at long side 640 (close-ups) and 1920 (faces across the room), because YuNet

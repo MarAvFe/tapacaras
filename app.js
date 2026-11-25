@@ -96,15 +96,87 @@ function rectFromDrag(x1, y1, x2, y2, minSide) {
   return { x: cx - w / p / 2, y: cy - h / p / 2, w: w / p, h: h / p, score: 1, manual: true };
 }
 
-function outName(name) {
-  const base = (name || "foto").replace(/\.[^.]+$/, "").replace(/[^\p{L}\p{N}_-]+/gu, "-").slice(0, 60) || "foto";
-  return `${base}-tapada.jpg`;
+// ---- Words: Spanish (Costa Rican voseo) is the page's own text; English is swapped in by the phone's language. ----
+
+const TEXT = {
+  es: {
+    title: "Tapacaras: tapá las caras en tu foto sin subirla a internet",
+    description: "Tapá las caras en tu foto con difuminado, pixelado o una carita, sin subirla a internet.",
+    tagline: "¡Tapá las caras en tu foto! (Sin subirla a internet)",
+    unsupported: "Este navegador no puede usar Tapacaras. Probá con una versión reciente de Chrome, Edge, Firefox o Safari.",
+    safeTitle: "¿Esto es seguro?",
+    safeBody: "Esto no se sube a internet, todo funciona desde tu teléfono. Si lo querés confirmar, podés apagar el " +
+      "internet y verás cómo el sitio igual funciona con normalidad 😉. Además, la foto que estás bajando no " +
+      "trae fecha ni datos de GPS.",
+    choose: "Elegir foto",
+    sampleImg: "assets/ejemplo.svg",
+    sampleAlt: "Ejemplo: tres personas dibujadas con la cara tapada con difuminado, pixelado y una carita",
+    coverWith: "Tapar con", blur: "Difuminado", pixel: "Pixelado", emoji: "Carita 🙂",
+    download: "Descargar foto",
+    canvasLabel: "Tu foto con las caras tapadas",
+    madeBy: "Hecho por", openSource: "Código abierto", detection: "Detección de caras con", and: "y",
+    opening: "Abriendo la foto…",
+    searching: "Buscando caras… (la primera vez tarda un poco más)",
+    openError: "No pudimos abrir esa imagen. Probá con una foto JPG o PNG.",
+    none: "No encontramos caras. Si hay alguna, arrastrá sobre ella para taparla.",
+    one: "Te tapamos 1 cara. ¡Podés tocarla para deshacerlo o arrastrar si faltó alguna!",
+    many: "Te tapamos {n} caras. ¡Podés tocar cada una para deshacerlo o arrastrar si faltó alguna!",
+    fileBase: "foto", fileSuffix: "tapada",
+  },
+  en: {
+    title: "Tapacaras: cover the faces in your photo without uploading it",
+    description: "Cover the faces in your photo with blur, pixels or a smiley, without uploading it.",
+    tagline: "Cover the faces in your photo! (Without uploading it)",
+    unsupported: "This browser can't run Tapacaras. Try a recent version of Chrome, Edge, Firefox or Safari.",
+    safeTitle: "Is this safe?",
+    safeBody: "Nothing gets uploaded: everything runs on your phone. Want to check? Turn off your internet and " +
+      "you'll see the site keeps working just fine 😉. Also, the photo you download has no date or GPS data.",
+    choose: "Choose photo",
+    sampleImg: "assets/example-en.svg",
+    sampleAlt: "Example: three drawn people with their faces covered by blur, pixels and a smiley",
+    coverWith: "Cover with", blur: "Blur", pixel: "Pixelate", emoji: "Smiley 🙂",
+    download: "Download photo",
+    canvasLabel: "Your photo with the faces covered",
+    madeBy: "Made by", openSource: "Open source", detection: "Face detection with", and: "and",
+    opening: "Opening the photo…",
+    searching: "Looking for faces… (the first time takes a little longer)",
+    openError: "We couldn't open that image. Try a JPG or PNG photo.",
+    none: "We didn't find any faces. If there are some, drag over them to cover them.",
+    one: "We covered 1 face. Tap it to undo, or drag over any we missed!",
+    many: "We covered {n} faces. Tap any of them to undo, or drag over any we missed!",
+    fileBase: "photo", fileSuffix: "covered",
+  },
+};
+
+// Spanish when the phone's first language is any Spanish; English for everything else.
+function pickLang(langs) {
+  const first = (langs && langs[0]) || "";
+  return /^es\b/i.test(first) ? "es" : "en";
+}
+let LANG = "es";
+const t = (key, lang = LANG) => TEXT[lang][key];
+
+function outName(name, lang = LANG) {
+  const fallback = t("fileBase", lang);
+  const base = (name || fallback).replace(/\.[^.]+$/, "").replace(/[^\p{L}\p{N}_-]+/gu, "-").slice(0, 60) || fallback;
+  return `${base}-${t("fileSuffix", lang)}.jpg`;
 }
 
-function statusText(n) {
-  if (n === 0) return "No encontramos caras. Si hay alguna, arrastrá sobre ella para taparla.";
-  if (n === 1) return "Te tapamos 1 cara. ¡Podés tocarla para deshacerlo o arrastrar si faltó alguna!";
-  return `Te tapamos ${n} caras. ¡Podés tocar cada una para deshacerlo o arrastrar si faltó alguna!`;
+function statusText(n, lang = LANG) {
+  if (n === 0) return t("none", lang);
+  if (n === 1) return t("one", lang);
+  return t("many", lang).replace("{n}", n);
+}
+
+function applyText(doc, lang) {
+  doc.documentElement.lang = lang === "es" ? "es-CR" : "en";
+  doc.title = t("title", lang);
+  doc.querySelector('meta[name="description"]')?.setAttribute("content", t("description", lang));
+  for (const el of doc.querySelectorAll("[data-t]")) el.textContent = t(el.dataset.t, lang);
+  for (const el of doc.querySelectorAll("[data-t-alt]")) el.alt = t(el.dataset.tAlt, lang);
+  for (const el of doc.querySelectorAll("[data-t-aria]")) el.setAttribute("aria-label", t(el.dataset.tAria, lang));
+  const img = doc.getElementById("sampleImg");
+  if (img) img.src = t("sampleImg", lang);
 }
 
 // ---- Detection (ONNX Runtime Web, WebAssembly, single thread: GitHub Pages can't enable threads) ----
@@ -210,7 +282,7 @@ function createApp(el) {
   async function open(file) {
     if (!file || state.busy) return;
     state.busy = true; el.download.disabled = true;
-    say("Abriendo la foto…");
+    say(t("opening"));
     try {
       const bmp = await createImageBitmap(file, { imageOrientation: "from-image" });
       const k = fitScale(bmp.width, bmp.height);
@@ -219,13 +291,13 @@ function createApp(el) {
       state.src = k === 1 ? bmp : await createImageBitmap(bmp, { resizeWidth: W, resizeHeight: H, resizeQuality: "high" });
       state.name = file.name; state.faces = [];
       el.editor.hidden = false; el.sample.hidden = true; draw();
-      say("Buscando caras… (la primera vez tarda un poco más)");
+      say(t("searching"));
       state.faces = await detectFaces(state.src, W, H);
       draw(); say(statusText(state.faces.length));
       el.download.disabled = false;
     } catch (e) {
       console.error(e);
-      say("No pudimos abrir esa imagen. Probá con una foto JPG o PNG.");
+      say(t("openError"));
     } finally { state.busy = false; }
   }
 
@@ -340,14 +412,38 @@ const tests = {
     near(b.x, 100); near(b.y, 100); near(b.w, 100); near(b.h, 100);
   },
   "download names are safe and Spanish"() {
-    eq(outName("IMG_1234.JPG"), "IMG_1234-tapada.jpg");
-    eq(outName("cumple de Ana (1).png"), "cumple-de-Ana-1--tapada.jpg");
-    eq(outName(""), "foto-tapada.jpg");
+    eq(outName("IMG_1234.JPG", "es"), "IMG_1234-tapada.jpg");
+    eq(outName("cumple de Ana (1).png", "es"), "cumple-de-Ana-1--tapada.jpg");
+    eq(outName("", "es"), "foto-tapada.jpg");
+    eq(outName("IMG_1234.JPG", "en"), "IMG_1234-covered.jpg");
+    eq(outName("", "en"), "photo-covered.jpg");
   },
   "status wording"() {
-    ok(statusText(0).startsWith("No encontramos caras"));
-    eq(statusText(1), "Te tapamos 1 cara. ¡Podés tocarla para deshacerlo o arrastrar si faltó alguna!");
-    eq(statusText(3), "Te tapamos 3 caras. ¡Podés tocar cada una para deshacerlo o arrastrar si faltó alguna!");
+    ok(statusText(0, "es").startsWith("No encontramos caras"));
+    eq(statusText(1, "es"), "Te tapamos 1 cara. ¡Podés tocarla para deshacerlo o arrastrar si faltó alguna!");
+    eq(statusText(3, "es"), "Te tapamos 3 caras. ¡Podés tocar cada una para deshacerlo o arrastrar si faltó alguna!");
+    eq(statusText(1, "en"), "We covered 1 face. Tap it to undo, or drag over any we missed!");
+    eq(statusText(3, "en"), "We covered 3 faces. Tap any of them to undo, or drag over any we missed!");
+  },
+  "the phone's first language picks the words"() {
+    eq(pickLang(["es-CR", "en"]), "es"); eq(pickLang(["es"]), "es"); eq(pickLang(["ES-mx"]), "es");
+    eq(pickLang(["en-US", "es"]), "en"); eq(pickLang(["pt-BR"]), "en"); eq(pickLang([]), "en"); eq(pickLang(undefined), "en");
+    eq(pickLang(["est"]), "en");
+  },
+  "both languages have every text"() {
+    const es = Object.keys(TEXT.es).sort().join(), en = Object.keys(TEXT.en).sort().join();
+    eq(en, es);
+  },
+  "every marked element on the page has a text"() {
+    for (const el of document.querySelectorAll("[data-t]")) ok(el.dataset.t in TEXT.es, `missing text ${el.dataset.t}`);
+    for (const el of document.querySelectorAll("[data-t-alt],[data-t-aria]")) ok((el.dataset.tAlt || el.dataset.tAria) in TEXT.es, "missing attribute text");
+  },
+  async "the Spanish texts in TEXT match the page's own HTML"() {
+    // The HTML is what people without JavaScript and link previews see; it must not drift from TEXT.es.
+    const html = await (await fetch("index.html")).text();
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    for (const el of doc.querySelectorAll("[data-t]")) eq(el.textContent.replace(/\s+/g, " ").trim(), TEXT.es[el.dataset.t]);
+    eq(doc.title, TEXT.es.title);
   },
   "every cover style paints over the face"() {
     const src = new OffscreenCanvas(200, 200), s = src.getContext("2d");
@@ -398,6 +494,9 @@ async function runSelftest(out) {
 }
 
 // ---- Start ----
+
+LANG = pickLang(navigator.languages || [navigator.language]);
+if (LANG !== "es") applyText(document, LANG);
 
 if (location.hash === "#selftest") {
   runSelftest(document.getElementById("selftest"));

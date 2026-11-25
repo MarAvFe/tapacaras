@@ -1,6 +1,6 @@
 # Tapacaras
 
-**A Spanish web page that covers the faces in a photo (blur, pixelate or a smiley) before you share it.
+**A web page (Spanish or English, following the phone's language) that covers the faces in a photo (blur, pixelate or a smiley) before you share it.
 The photo never leaves the phone or computer: detection and covering run in the browser tab.**
 
 **Use it: [marcelloavila.com/tapacaras](https://marcelloavila.com/tapacaras/)** (not published yet)
@@ -18,11 +18,11 @@ the face model with `fetch`. No install, no account, no server code.
 
 | Do | Action |
 |----|--------|
-| **Elegir foto** | Pick a photo; every face found is covered |
+| **Elegir foto** / **Choose photo** | Pick a photo; every face found is covered |
 | Tap or click a face | Uncover it (a dashed outline stays so it can be covered again) |
 | Drag over a spot | Cover a face the detector missed |
-| **Tapar con** | Switch between *Difuminado* (blur), *Pixelado* and *Carita 🙂* |
-| **Descargar foto** | Save a JPEG: covered faces, no outlines, no location or camera metadata |
+| **Tapar con** / **Cover with** | Switch between blur, pixelate and a smiley |
+| **Descargar foto** / **Download photo** | Save a JPEG: covered faces, no outlines, no location or camera metadata |
 
 Check every photo before sharing it: the detector misses faces in profile, upside down or very small.
 

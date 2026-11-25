@@ -33,9 +33,14 @@ const shot = async (name) => {
 
 await send("Runtime.enable"); await send("Log.enable"); await send("Page.enable"); await send("DOM.enable");
 await send("Emulation.setDeviceMetricsOverride", { width: +width, height: +height, deviceScaleFactor: 1, mobile: +width < 600 });
+if (process.env.ACCEPT_LANG) { // pretend the phone's languages are these, e.g. "en-US,en" or "es-CR,es"
+  const ua = (await send("Browser.getVersion")).result.userAgent;
+  await send("Emulation.setUserAgentOverride", { userAgent: ua, acceptLanguage: process.env.ACCEPT_LANG });
+}
 await send("Page.navigate", { url: base });
 await sleep(1500);
 await shot("start");
+console.log("page:", JSON.stringify(await evalJs("({ lang: document.documentElement.lang, languages: navigator.languages, tagline: document.querySelector('[data-t=tagline]').textContent, sample: document.getElementById('sampleImg').getAttribute('src') })")));
 console.log("sample visible before photo:", await evalJs("!document.getElementById('sample').hidden"), "(expect true)");
 if (process.env.OFFLINE) { // the page promises it keeps working with the network off once loaded
   await send("Network.enable");
@@ -47,7 +52,7 @@ const input = await send("DOM.querySelector", { nodeId: doc.result.root.nodeId, 
 const t0 = Date.now();
 await send("DOM.setFileInputFiles", { nodeId: input.result.nodeId, files: [resolve(photo)] });
 let status = "";
-for (let i = 0; i < 240 && !/^(Te tapamos|No encontramos|No pudimos)/.test(status); i++) { await sleep(250); status = await evalJs("document.getElementById('status').textContent"); }
+for (let i = 0; i < 240 && !/^(Te tapamos|No encontramos|No pudimos|We covered|We didn't|We couldn't)/.test(status); i++) { await sleep(250); status = await evalJs("document.getElementById('status').textContent"); }
 console.log(`status after ${((Date.now() - t0) / 1000).toFixed(1)} s: ${status}`);
 await shot("blur");
 console.log("sample hidden after photo:", await evalJs("document.getElementById('sample').hidden"), "(expect true)");

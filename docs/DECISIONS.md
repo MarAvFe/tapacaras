@@ -30,6 +30,17 @@ Format: reading taken — reason — how to change.
   everywhere. — Replace `assets/ejemplo.svg`. A photo of AI-generated people (local ComfyUI) would let
   visitors try the detector without their own photo.
 
+- **English too, picked by the phone's first language: any Spanish (`es`, `es-CR`, `es-MX`…) gets Spanish,
+  everything else gets English.** — "translate to english so the site can react according to the phone"
+  (2026-11-25). Only the first language counts, so someone whose phone is in English but lists Spanish second
+  sees English, as their phone does. — `pickLang` in `app.js`.
+- **The HTML stays in Spanish, and English is swapped in by script from `TEXT.en`.** — No build step, and
+  link previews and search engines keep the Spanish page. English visitors may see Spanish for a moment
+  while the scripts load. The self-test checks that `TEXT.es` matches the HTML word for word. — Move the
+  swap earlier (a small script in `<head>` loaded with a hash in the CSP) if the flash bothers anyone.
+- **English sample drawing is a copy with English labels (`assets/example-en.svg`).** — SVG text can't be
+  translated from the page. — Keep the two files in step when the drawing changes.
+
 ## Detection
 
 - **YuNet (OpenCV Zoo, MIT) on ONNX Runtime Web (MIT), both self-hosted.** — Licence read at the source:

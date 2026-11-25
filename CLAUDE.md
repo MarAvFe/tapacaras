@@ -25,4 +25,5 @@ covered by default, a missed face can be covered by hand, and it works on a phon
 
 - Self-test: `./selftest.sh`. Run it before every commit; it must print `SELFTEST PASS`.
 - Decisions go in `docs/DECISIONS.md` (reading taken — reason — how to change).
-- Published text is in Spanish; everything internal is in English.
+- Visitor-facing text is Costa Rican Spanish (voseo) plus an English copy, both in `TEXT` in `app.js`;
+  everything internal is in English.

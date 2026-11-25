@@ -30,3 +30,5 @@ The idea came up while blurring faces in a private video, in the same session.
   funciona con normalidad (wink emoji). Además, la foto que estás bajando, no trae fecha ni datos de GPS."
   Below the download picture: "Te tapamos 3 caras. Podés tocar cada una para deshacerlo o arrastrar si faltó
   alguna!". Nothing below the picture other than the sources."
+- 2026-11-25 — "tested it on a phone, all works perfect and offline too. you know what, this is very simple,
+  translate to english so the site can react according to the phone".
