@@ -34,3 +34,4 @@ The idea came up while blurring faces in a private video, in the same session.
   translate to english so the site can react according to the phone".
 - 2026-11-25 — "push this thing".
 - 2026-11-25 — Pasted the GoatCounter snippet for code `marcelloavila` (used as a pixel instead of the script).
+- 2026-11-25 — "add it to my homepage projects list. and add a favicon to tapacaras. a pixelated style face".
