@@ -41,6 +41,11 @@ Format: reading taken — reason — how to change.
 - **English sample drawing is a copy with English labels (`assets/example-en.svg`).** — SVG text can't be
   translated from the page. — Keep the two files in step when the drawing changes.
 
+- **Published 2026-11-25: public repo github.com/MarAvFe/tapacaras, GitHub Pages from `main` /, served at
+  marcelloavila.com/tapacaras. Visit counting is off because no GoatCounter code has been given yet.** — The
+  user said "push this thing". Every push to `main` redeploys. — Make the repo private or disable Pages
+  in its settings to take it down.
+
 ## Detection
 
 - **YuNet (OpenCV Zoo, MIT) on ONNX Runtime Web (MIT), both self-hosted.** — Licence read at the source:

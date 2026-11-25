@@ -3,7 +3,7 @@
 **A web page (Spanish or English, following the phone's language) that covers the faces in a photo (blur, pixelate or a smiley) before you share it.
 The photo never leaves the phone or computer: detection and covering run in the browser tab.**
 
-**Use it: [marcelloavila.com/tapacaras](https://marcelloavila.com/tapacaras/)** (not published yet)
+**Use it: [marcelloavila.com/tapacaras](https://marcelloavila.com/tapacaras/)**
 
 <img src="assets/ejemplo.svg" alt="The sample picture: three drawn people covered with blur, pixels and a smiley" width="640">
 

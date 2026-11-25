@@ -32,3 +32,4 @@ The idea came up while blurring faces in a private video, in the same session.
   alguna!". Nothing below the picture other than the sources."
 - 2026-11-25 — "tested it on a phone, all works perfect and offline too. you know what, this is very simple,
   translate to english so the site can react according to the phone".
+- 2026-11-25 — "push this thing".
