@@ -235,19 +235,23 @@ function createApp(el) {
     return { x: (e.clientX - r.left) * el.canvas.width / r.width, y: (e.clientY - r.top) * el.canvas.height / r.height, perPx: el.canvas.width / r.width };
   }
   let drag = null;
+  const fingers = new Set();
   el.canvas.addEventListener("pointerdown", (e) => {
+    fingers.add(e.pointerId);
+    if (fingers.size > 1) { if (drag) { drag = null; draw(); } return; }
     if (!state.src || state.busy) return;
-    const p = toCanvas(e); drag = { x1: p.x, y1: p.y, x2: p.x, y2: p.y, perPx: p.perPx, moved: false };
+    const p = toCanvas(e); drag = { id: e.pointerId, x1: p.x, y1: p.y, x2: p.x, y2: p.y, perPx: p.perPx, moved: false };
     el.canvas.setPointerCapture(e.pointerId);
   });
   el.canvas.addEventListener("pointermove", (e) => {
-    if (!drag) return;
+    if (!drag || e.pointerId !== drag.id) return;
     const p = toCanvas(e); drag.x2 = p.x; drag.y2 = p.y;
     if (Math.hypot(drag.x2 - drag.x1, drag.y2 - drag.y1) > 12 * drag.perPx) drag.moved = true;
     if (drag.moved) draw(drag);
   });
-  el.canvas.addEventListener("pointerup", () => {
-    if (!drag) return;
+  el.canvas.addEventListener("pointerup", (e) => {
+    fingers.delete(e.pointerId);
+    if (!drag || e.pointerId !== drag.id) return;
     const d = drag; drag = null;
     const W = el.canvas.width, H = el.canvas.height;
     const box = d.moved && rectFromDrag(d.x1, d.y1, d.x2, d.y2, 12 * d.perPx);
@@ -258,7 +262,7 @@ function createApp(el) {
     }
     draw();
   });
-  el.canvas.addEventListener("pointercancel", () => { drag = null; draw(); });
+  el.canvas.addEventListener("pointercancel", (e) => { fingers.delete(e.pointerId); drag = null; draw(); });
 
   el.file.addEventListener("change", () => open(el.file.files[0]));
   for (const r of el.styles) r.addEventListener("change", () => { state.style = r.value; draw(); });
