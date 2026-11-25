@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" role="img" aria-label="Tres personas dibujadas con la cara tapada: difuminado, pixelado y una carita">
+  <!-- Original illustration (no real people): shows the three cover styles before a photo is chosen. -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#bfe6ff"/><stop offset="1" stop-color="#fffdf5"/>
+    </linearGradient>
+    <filter id="blur" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="11"/></filter>
+    <clipPath id="head2"><circle cx="450" cy="170" r="62"/></clipPath>
+  </defs>
+  <rect width="900" height="440" fill="url(#sky)"/>
+  <circle cx="300" cy="62" r="34" fill="#ffd23f"/>
+  <path d="M0 330 Q225 300 450 325 T900 318 V440 H0Z" fill="#9fdc8f"/>
+  <path d="M0 360 Q300 340 600 362 T900 355 V440 H0Z" fill="#7cc96b"/>
+
+  <!-- 1: Difuminado -->
+  <g>
+    <path d="M85 400 V300 Q85 255 150 252 Q215 255 215 300 V392Z" fill="#ff8a5b" stroke="#111" stroke-width="4"/>
+    <g filter="url(#blur)">
+      <circle cx="150" cy="175" r="60" fill="#e0a77a"/>
+      <path d="M92 165 Q95 105 150 108 Q208 105 210 168 Q190 135 150 140 Q110 135 92 165Z" fill="#3b2416"/>
+      <circle cx="128" cy="180" r="7" fill="#111"/><circle cx="172" cy="180" r="7" fill="#111"/>
+      <path d="M130 205 Q150 220 170 205" stroke="#111" stroke-width="5" fill="none"/>
+    </g>
+    <rect x="40" y="396" width="220" height="40" rx="6" fill="#fffdf5" stroke="#111" stroke-width="3"/>
+    <text x="150" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="700" fill="#111">Difuminado</text>
+  </g>
+
+  <!-- 2: Pixelado -->
+  <g>
+    <path d="M385 400 V300 Q385 255 450 252 Q515 255 515 300 V392Z" fill="#4aa3df" stroke="#111" stroke-width="4"/>
+    <g clip-path="url(#head2)">
+      <rect x="388" y="108" width="124" height="124" fill="#8d5a3b"/>
+      <g fill="#2a1a10"><rect x="388" y="108" width="124" height="25"/><rect x="388" y="133" width="25" height="25"/><rect x="487" y="133" width="25" height="25"/></g>
+      <g fill="#a8714c"><rect x="413" y="133" width="25" height="25"/><rect x="462" y="158" width="25" height="25"/><rect x="413" y="183" width="25" height="25"/><rect x="462" y="207" width="25" height="25"/></g>
+      <g fill="#6e432a"><rect x="438" y="158" width="25" height="25"/><rect x="413" y="158" width="25" height="25"/><rect x="487" y="183" width="25" height="25"/><rect x="438" y="207" width="25" height="25"/></g>
+      <g fill="#b98262"><rect x="438" y="183" width="25" height="25"/><rect x="388" y="183" width="25" height="25"/><rect x="462" y="133" width="25" height="25"/></g>
+    </g>
+    <circle cx="450" cy="170" r="62" fill="none" stroke="#111" stroke-width="4"/>
+    <rect x="340" y="396" width="220" height="40" rx="6" fill="#fffdf5" stroke="#111" stroke-width="3"/>
+    <text x="450" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="700" fill="#111">Pixelado</text>
+  </g>
+
+  <!-- 3: Carita (drawn, not an emoji glyph, so it looks the same on every device) -->
+  <g>
+    <path d="M685 400 V300 Q685 255 750 252 Q815 255 815 300 V392Z" fill="#9b6bd6" stroke="#111" stroke-width="4"/>
+    <path d="M680 160 Q682 92 750 95 Q820 92 822 162 Z" fill="#c9773a"/>
+    <circle cx="750" cy="172" r="70" fill="#ffd23f" stroke="#e0a800" stroke-width="5"/>
+    <ellipse cx="725" cy="155" rx="9" ry="13" fill="#4a2c0a"/><ellipse cx="775" cy="155" rx="9" ry="13" fill="#4a2c0a"/>
+    <path d="M712 192 Q750 228 788 192" stroke="#4a2c0a" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <rect x="640" y="396" width="220" height="40" rx="6" fill="#fffdf5" stroke="#111" stroke-width="3"/>
+    <text x="750" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="700" fill="#111">Carita</text>
+  </g>
+</svg>

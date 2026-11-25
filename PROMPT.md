@@ -23,3 +23,4 @@ The idea came up while blurring faces in a private video, in the same session.
 
 - 2026-11-25 — Count only root visits ("just access"), not picture size. Three cover styles; only two were
   named, so Pixelado was chosen as the third (see docs/DECISIONS.md).
+- 2026-11-25 — "it's so perfect. just add a placeholder picture".

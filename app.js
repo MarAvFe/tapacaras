@@ -219,7 +219,7 @@ function createApp(el) {
       el.canvas.width = W; el.canvas.height = H;
       state.src = k === 1 ? bmp : await createImageBitmap(bmp, { resizeWidth: W, resizeHeight: H, resizeQuality: "high" });
       state.name = file.name; state.faces = [];
-      el.editor.hidden = false; draw();
+      el.editor.hidden = false; el.sample.hidden = true; draw();
       say("Buscando caras… (la primera vez tarda un poco más)");
       state.faces = await detectFaces(state.src, W, H);
       draw(); say(statusText(state.faces.length));
@@ -404,7 +404,7 @@ if (location.hash === "#selftest") {
   const $ = (id) => document.getElementById(id);
   // Exposed only so tests/screenshot.mjs can check what taps and drags did; holds nothing secret.
   window.tapacaras = createApp({
-    file: $("file"), canvas: $("canvas"), status: $("status"), editor: $("editor"),
+    file: $("file"), sample: $("sample"), canvas: $("canvas"), status: $("status"), editor: $("editor"),
     download: $("download"), styles: document.querySelectorAll("input[name=style]"),
   });
   countVisit();

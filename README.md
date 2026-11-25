@@ -5,7 +5,10 @@ The photo never leaves the phone or computer: detection and covering run in the 
 
 **Use it: [marcelloavila.com/tapacaras](https://marcelloavila.com/tapacaras/)** (not published yet)
 
-No screenshot yet: every test photo so far shows a child, and those stay out of this repository.
+<img src="assets/ejemplo.svg" alt="The sample picture: three drawn people covered with blur, pixels and a smiley" width="640">
+
+This drawing is what the page shows before a photo is chosen. There are no real screenshots: every test photo
+so far shows a child, and those stay out of this repository.
 
 ## Run
 

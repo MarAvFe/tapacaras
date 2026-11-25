@@ -35,6 +35,8 @@ await send("Runtime.enable"); await send("Log.enable"); await send("Page.enable"
 await send("Emulation.setDeviceMetricsOverride", { width: +width, height: +height, deviceScaleFactor: 1, mobile: +width < 600 });
 await send("Page.navigate", { url: base });
 await sleep(1500);
+await shot("start");
+console.log("sample visible before photo:", await evalJs("!document.getElementById('sample').hidden"), "(expect true)");
 if (process.env.OFFLINE) { // the page promises it keeps working with the network off once loaded
   await send("Network.enable");
   await send("Network.emulateNetworkConditions", { offline: true, latency: 0, downloadThroughput: -1, uploadThroughput: -1 });
@@ -48,6 +50,7 @@ let status = "";
 for (let i = 0; i < 240 && !/^(Encontramos|No encontramos|No pudimos)/.test(status); i++) { await sleep(250); status = await evalJs("document.getElementById('status').textContent"); }
 console.log(`status after ${((Date.now() - t0) / 1000).toFixed(1)} s: ${status}`);
 await shot("blur");
+console.log("sample hidden after photo:", await evalJs("document.getElementById('sample').hidden"), "(expect true)");
 for (const style of ["pixel", "emoji"]) {
   await evalJs(`(() => { const r = document.querySelector('input[value=${style}]'); r.checked = true; r.dispatchEvent(new Event('change')); })()`);
   await sleep(300); await shot(style);

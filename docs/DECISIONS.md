@@ -18,6 +18,12 @@ Format: reading taken — reason — how to change.
 - **Spanish uses "usted".** — Matches Ubicatex's voice ("Toque su lugar en el mapa"). — Edit the strings in
   `index.html` and `statusText` in `app.js`.
 
+- **The placeholder picture is an original SVG drawing of three made-up people, one per cover style, and
+  tapping it opens the file picker.** — "Add a placeholder picture" (2026-11-25). A drawing keeps real people
+  out of a public repo and previews the styles; the smiley is drawn, not an emoji glyph, so it looks the same
+  everywhere. — Replace `assets/ejemplo.svg`. A photo of AI-generated people (local ComfyUI) would let
+  visitors try the detector without their own photo.
+
 ## Detection
 
 - **YuNet (OpenCV Zoo, MIT) on ONNX Runtime Web (MIT), both self-hosted.** — Licence read at the source:

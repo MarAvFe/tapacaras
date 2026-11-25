@@ -7,6 +7,7 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Sample drawing of the three cover styles where the photo goes, until one is chosen.
 - Spanish page that finds faces in a photo with YuNet and covers them all by default, in the browser only.
 - Tap a face to uncover or re-cover it; drag to cover a face the detector missed.
 - Three cover styles: Difuminado, Pixelado, Carita 🙂.
