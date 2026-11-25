@@ -7,8 +7,8 @@ The photo never leaves the phone or computer: detection and covering run in the 
 
 <img src="assets/ejemplo.svg" alt="The sample picture: three drawn people covered with blur, pixels and a smiley" width="640">
 
-This drawing is what the page shows before a photo is chosen. There are no real screenshots: every test photo
-so far shows a child, and those stay out of this repository.
+This drawing is what the page shows before a photo is chosen. There are no real screenshots: test photos of
+real people stay out of this repository.
 
 ## Run
 

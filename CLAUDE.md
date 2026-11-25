@@ -17,7 +17,7 @@ covered by default, a missed face can be covered by hand, and it works on a phon
 - Only page opens are counted. Nothing about photos (size, faces, style) is sent anywhere: the user decided
   that on 2026-11-25.
 - No photos of real people in the repository, not even in tests or screenshots: `tests/local/` is
-  git-ignored for that. The user's child must never appear in anything published.
+  git-ignored for that.
 - Claims on the page (privacy, metadata, offline) are tested by `tests/screenshot.mjs`. Rerun it after
   changing any of them.
 
