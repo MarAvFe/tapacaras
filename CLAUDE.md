@@ -4,7 +4,7 @@ Project facts the code can't show. Keep it short; no code snippets or build orde
 
 ## What it is for
 
-A public, Spanish (Costa Rican, "usted") page where anyone covers the faces in a photo before sharing it,
+A public, Spanish (Costa Rican "vos", the user's wording) page where anyone covers the faces in a photo before sharing it,
 mainly parents hiding children's faces. Success: the photo never leaves the device, every detected face is
 covered by default, a missed face can be covered by hand, and it works on a phone.
 

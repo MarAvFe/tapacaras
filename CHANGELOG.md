@@ -6,6 +6,9 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+- Texts rewritten in Costa Rican voseo; the safety note is now a collapsible "¿Esto es seguro?" box.
+
 ### Added
 - Sample drawing of the three cover styles where the photo goes, until one is chosen.
 - Spanish page that finds faces in a photo with YuNet and covers them all by default, in the browser only.

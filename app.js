@@ -102,10 +102,9 @@ function outName(name) {
 }
 
 function statusText(n) {
-  if (n === 0) return "No encontramos caras. Si hay alguna, arrastre sobre ella para taparla.";
-  const caras = n === 1 ? "1 cara" : `${n} caras`;
-  return `Encontramos ${caras} y las tapamos. Toque una cara para destaparla o volver a taparla. ` +
-    "Arrastre sobre una cara que se nos haya pasado para taparla.";
+  if (n === 0) return "No encontramos caras. Si hay alguna, arrastrá sobre ella para taparla.";
+  if (n === 1) return "Te tapamos 1 cara. ¡Podés tocarla para deshacerlo o arrastrar si faltó alguna!";
+  return `Te tapamos ${n} caras. ¡Podés tocar cada una para deshacerlo o arrastrar si faltó alguna!`;
 }
 
 // ---- Detection (ONNX Runtime Web, WebAssembly, single thread: GitHub Pages can't enable threads) ----
@@ -226,7 +225,7 @@ function createApp(el) {
       el.download.disabled = false;
     } catch (e) {
       console.error(e);
-      say("No pudimos abrir esa imagen. Pruebe con una foto JPG o PNG.");
+      say("No pudimos abrir esa imagen. Probá con una foto JPG o PNG.");
     } finally { state.busy = false; }
   }
 
@@ -347,8 +346,8 @@ const tests = {
   },
   "status wording"() {
     ok(statusText(0).startsWith("No encontramos caras"));
-    ok(statusText(1).startsWith("Encontramos 1 cara y"));
-    ok(statusText(3).startsWith("Encontramos 3 caras"));
+    eq(statusText(1), "Te tapamos 1 cara. ¡Podés tocarla para deshacerlo o arrastrar si faltó alguna!");
+    eq(statusText(3), "Te tapamos 3 caras. ¡Podés tocar cada una para deshacerlo o arrastrar si faltó alguna!");
   },
   "every cover style paints over the face"() {
     const src = new OffscreenCanvas(200, 200), s = src.getContext("2d");

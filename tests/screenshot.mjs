@@ -47,7 +47,7 @@ const input = await send("DOM.querySelector", { nodeId: doc.result.root.nodeId, 
 const t0 = Date.now();
 await send("DOM.setFileInputFiles", { nodeId: input.result.nodeId, files: [resolve(photo)] });
 let status = "";
-for (let i = 0; i < 240 && !/^(Encontramos|No encontramos|No pudimos)/.test(status); i++) { await sleep(250); status = await evalJs("document.getElementById('status').textContent"); }
+for (let i = 0; i < 240 && !/^(Te tapamos|No encontramos|No pudimos)/.test(status); i++) { await sleep(250); status = await evalJs("document.getElementById('status').textContent"); }
 console.log(`status after ${((Date.now() - t0) / 1000).toFixed(1)} s: ${status}`);
 await shot("blur");
 console.log("sample hidden after photo:", await evalJs("document.getElementById('sample').hidden"), "(expect true)");

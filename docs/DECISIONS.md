@@ -15,8 +15,14 @@ Format: reading taken — reason — how to change.
 - **Third cover style: Pixelado.** — The request asked for 3 options but named two (plain blur, smiley
   emoji); pixelation is the usual third. — Change the radio buttons in `index.html` and the `style`
   branches in `drawCover`.
-- **Spanish uses "usted".** — Matches Ubicatex's voice ("Toque su lugar en el mapa"). — Edit the strings in
-  `index.html` and `statusText` in `app.js`.
+- **Spanish uses "vos" (Costa Rican voseo), in the user's own wording.** — The user rewrote the texts on
+  2026-11-25 ("¡Tapá las caras en tu foto!"). The first draft used "usted", like Ubicatex. I added the
+  opening ¡ ¿, fixed "confirmat" and "como" (to "confirmar", "cómo"), and dropped a comma between subject and
+  verb. — Edit the strings in `index.html` and `statusText` / `say(...)` in `app.js`.
+- **The safety explanation is a collapsed "¿Esto es seguro?" box, and nothing sits under the photo except
+  the credits.** — The user's layout. The "check before sharing" warning under the photo was removed with it;
+  the status line still says to drag over any face that was missed. — `<details class="privacy">` in
+  `index.html`.
 
 - **The placeholder picture is an original SVG drawing of three made-up people, one per cover style, and
   tapping it opens the file picker.** — "Add a placeholder picture" (2026-11-25). A drawing keeps real people
